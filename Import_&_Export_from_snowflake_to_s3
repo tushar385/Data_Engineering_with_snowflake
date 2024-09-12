@@ -1,0 +1,34 @@
+Snowflake to s3
+--- when we want to dump single with max size file (snowflake to s3)
+COPY INTO 's3://data-bucket/obfs/demo_data/june_26_2024/SUPPORT_MASTER'
+  from PRIME.CHURN_PREDICTIONS_DATA.SUPPORT_MASTER HEADER=TRUE
+  credentials =
+(aws_key_id='AY123' 
+aws_secret_key='WF123'
+)
+FILE_FORMAT = (TYPE=CSV, COMPRESSION = NONE, FIELD_OPTIONALLY_ENCLOSED_BY='"', EMPTY_FIELD_AS_NULL = TRUE NULL_IF = ('NULL'))
+overwrite=TRUE, single=TRUE max_file_size = 5000000000
+;
+
+
+
+s3 to snowflake
+COPY INTO PRIME.TESTING_DATASET.BILLING_TS_LARGE
+FROM 's3://data-bucket/obfs/demo_data/june_26_2024/BILLING_TS_LARGE'
+CREDENTIALS = (
+  AWS_KEY_ID='AY123' 
+  AWS_SECRET_KEY='WF123'
+)
+FILE_FORMAT = (
+  TYPE = CSV 
+  FIELD_DELIMITER = ',' 
+  RECORD_DELIMITER = '\n'  
+  SKIP_HEADER = 1  
+  EMPTY_FIELD_AS_NULL = TRUE  -- Treat empty fields as NULL values
+  FIELD_OPTIONALLY_ENCLOSED_BY = '"'
+  NULL_IF = ('NULL')          -- Treat 'NULL' string as NULL value
+)
+ON_ERROR = 'CONTINUE';
+
+
+--Note Need to create table schema first before importing from s3
