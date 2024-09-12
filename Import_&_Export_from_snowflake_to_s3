@@ -1,4 +1,4 @@
-Snowflake to s3
+#Snowflake to S3
 --- when we want to dump single with max size file (snowflake to s3)
 COPY INTO 's3://data-bucket/obfs/demo_data/june_26_2024/SUPPORT_MASTER'
   from PRIME.CHURN_PREDICTIONS_DATA.SUPPORT_MASTER HEADER=TRUE
@@ -11,8 +11,7 @@ overwrite=TRUE, single=TRUE max_file_size = 5000000000
 ;
 
 
-
-s3 to snowflake
+#S3 to Snowflake
 COPY INTO PRIME.TESTING_DATASET.BILLING_TS_LARGE
 FROM 's3://data-bucket/obfs/demo_data/june_26_2024/BILLING_TS_LARGE'
 CREDENTIALS = (
